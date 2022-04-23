@@ -6,7 +6,7 @@ from core import models
 
 class UserAdmin(BaseUserAdmin):
     ordering = ["id"]
-    list_display = ["email", "name",'is_active', 'is_staff','is_superuser']
+    list_display = ["email", "name", "is_active", "is_staff", "is_superuser"]
     # required to edit user info
     fieldsets = (
         (None, {"fields": ("email", "password")}),
