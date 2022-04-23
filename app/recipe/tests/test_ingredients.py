@@ -1,3 +1,4 @@
+from genericpath import exists
 from unicodedata import name
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -50,3 +51,16 @@ class PrivateIngredientApiTests(TestCase):
         assert res.status_code == status.HTTP_200_OK
         assert len(res.data) == 1
         assert res.data[0]["name"] == ingredient.name
+
+    def test_ingredient_successful(self):
+        """Test create a new ingredient"""
+        payload = {"name": "cabbage"}
+        self.client.post(INGREDIENT_URLS, payload)
+        exists = Ingredient.objects.filter(user=self.user, name=payload["name"]).exists()
+        assert exists==True
+
+    def test_ingredient_invalid(self):
+        """Test creating invalid ingredient fails"""
+        payload={'name':''}
+        res=self.client.post(INGREDIENT_URLS,payload)
+        assert res.status_code==status.HTTP_400_BAD_REQUEST
